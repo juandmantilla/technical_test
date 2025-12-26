@@ -26,7 +26,7 @@ public class ProductRepositoryAdapter extends ReactiveAdapterOperations<Product,
         return save(product)
                 .doOnSubscribe(sub -> log.info("Start to add new product to Branch:  {}", product))
                 .onErrorMap(error -> {
-                    log.error("Error while trying to save the product");
+                    log.error("Error while trying to save the product", error);
                     return new TechnicalException(
                             ResponseMessages.ERROR_SAVE_PRODUCT.getStatusCode(),
                             ResponseMessages.ERROR_SAVE_PRODUCT.getDescription());
@@ -38,7 +38,7 @@ public class ProductRepositoryAdapter extends ReactiveAdapterOperations<Product,
         return repository.deleteById(id)
                 .doFirst(() -> log.info("Trying to delete Product in Branch"))
                 .onErrorMap(error -> {
-                    log.error("Error while delete product in branch");
+                    log.error("Error while delete product in branch", error);
                     return new TechnicalException(
                             ResponseMessages.ERROR_DELETE_PRODUCT.getStatusCode(),
                             ResponseMessages.ERROR_DELETE_PRODUCT.getDescription());

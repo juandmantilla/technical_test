@@ -19,13 +19,13 @@ public class BranchRepositoryAdapter extends ReactiveAdapterOperations<Branch, B
     public BranchRepositoryAdapter(BranchRepository repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.map(d, Branch.class));
     }
-    
+
     @Override
     public Mono<Branch> addBranchToFranchise(Branch branch) {
         return save(branch)
                 .doFirst(() -> log.info("Start to save Branch to Franchise"))
                 .onErrorMap(error -> {
-                    log.error("Error to Add Branch to Franchise: {}", error.getMessage());
+                    log.error("Error to Add Branch to Franchise", error);
                     return new TechnicalException(
                             ResponseMessages.ERROR_ADD_BRANCH_TO_FRANCHISE.getStatusCode(),
                             ResponseMessages.ERROR_ADD_BRANCH_TO_FRANCHISE.getDescription()

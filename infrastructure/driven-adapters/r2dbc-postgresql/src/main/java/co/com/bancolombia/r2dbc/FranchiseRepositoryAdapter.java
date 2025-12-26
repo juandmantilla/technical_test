@@ -26,7 +26,7 @@ public class FranchiseRepositoryAdapter extends ReactiveAdapterOperations<Franch
         return save(franchise)
                 .doFirst(() -> log.info("Start add New Franchise"))
                 .onErrorMap(error -> {
-                    log.error("Error while trying to Add New Franchise");
+                    log.error("Error while trying to Add New Franchise", error);
                     return new TechnicalException(
                             ResponseMessages.ERROR_SAVE_FRANCHISE.getStatusCode(),
                             ResponseMessages.ERROR_SAVE_FRANCHISE.getDescription());

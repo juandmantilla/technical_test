@@ -1,47 +1,167 @@
-# Proyecto Base Implementando Clean Architecture
+# Technical Test – Scaffold Clean Architecture
 
-## Antes de Iniciar
+Backend application developed as a technical test to manage **franchises, branches, and products**, including **stock management** and **queries to retrieve the product with the highest stock per branch**.
 
-Empezaremos por explicar los diferentes componentes del proyectos y partiremos de los componentes externos, continuando con los componentes core de negocio (dominio) y por último el inicio y configuración de la aplicación.
+The application is built using **Spring Boot WebFlux** and follows a **Scaffold Clean Architecture** approach.
 
-Lee el artículo [Clean Architecture — Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
+---
 
-# Arquitectura
+## 1. Tech Stack
 
-![Clean Architecture](https://miro.medium.com/max/1400/1*ZdlHz8B0-qu9Y-QO3AXR_w.png)
+- Java 21
+- Spring Boot (WebFlux)
+- Project Reactor (Mono / Flux)
+- R2DBC
+- PostgreSQL
+- Docker
+- Gradle
 
-## Domain
+---
 
-Es el módulo más interno de la arquitectura, pertenece a la capa del dominio y encapsula la lógica y reglas del negocio mediante modelos y entidades del dominio.
+## 2. Architecture
 
-## Usecases
+- **Scaffold Clean Architecture**
+- Reactive and non-blocking design
+- Clear separation of concerns:
+    - Domain
+    - Use Cases
+    - Infrastructure
+    - Entry Points
 
-Este módulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define lógica de aplicación y reacciona a las invocaciones desde el módulo de entry points, orquestando los flujos hacia el módulo de entities.
+---
 
-## Infrastructure
+## 3. Prerequisites
 
-### Helpers
+Before running the application, ensure you have installed:
 
-En el apartado de helpers tendremos utilidades generales para los Driven Adapters y Entry Points.
+- Docker
+- Java 21
+- Gradle (optional, wrapper included)
 
-Estas utilidades no están arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
-genéricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
-basadas en el patrón de diseño [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
+---
 
-Estas clases no puede existir solas y debe heredarse su compartimiento en los **Driven Adapters**
+## 4. Database Setup
 
-### Driven Adapters
+### 4.1 Create PostgreSQL container
 
-Los driven adapter representan implementaciones externas a nuestro sistema, como lo son conexiones a servicios rest,
-soap, bases de datos, lectura de archivos planos, y en concreto cualquier origen y fuente de datos con la que debamos
-interactuar.
+```bash
+docker run --name postgres \
+  -e POSTGRES_USER=<your_user> \
+  -e POSTGRES_PASSWORD=<your_password> \
+  -e POSTGRES_DB=<your_database_name> \
+  -p 5432:5432 \
+  -v postgres_data:/var/lib/postgresql/data \
+  -d postgres:16
+```
 
-### Entry Points
+---
 
-Los entry points representan los puntos de entrada de la aplicación o el inicio de los flujos de negocio.
+### 4.2 Create database tables
 
-## Application
+```sql
+CREATE TABLE franchise (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255),
+    created_date TIMESTAMP
+);
 
-Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
+CREATE TABLE branch (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    franchise_id BIGINT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(255),
+    phone VARCHAR(20),
+    created_date TIMESTAMP,
 
-**Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+    CONSTRAINT fk_branch_franchise
+        FOREIGN KEY (franchise_id)
+        REFERENCES franchise(id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE product (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    branch_id BIGINT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    price NUMERIC(10,2) NOT NULL,
+    stock INT NOT NULL,
+    created_date TIMESTAMP,
+
+    CONSTRAINT fk_product_branch
+        FOREIGN KEY (branch_id)
+        REFERENCES branch(id)
+        ON DELETE CASCADE
+);
+```
+
+---
+
+## 5. Environment Variables
+
+### Linux / macOS
+
+```bash
+export DB_DATABASE=postgres
+export DB_HOST=docker ip database
+export DB_PORT=5432
+export DB_SCHEMA=public
+export DB_PASSWORD=<your_password>
+export DB_USERNAME=postgres
+```
+
+### Windows (PowerShell)
+
+```powershell
+$env:DB_DATABASE="postgres"
+$env:DB_HOST="<docker ip database>"
+$env:DB_PORT="5432"
+$env:DB_SCHEMA="public"
+$env:DB_PASSWORD="<your_password>"
+$env:DB_USERNAME="postgres"
+```
+---
+
+## 6. How to Run the Application
+
+### Clone the repository
+
+```bash
+git clone https://github.com/juandmantilla/technical_test.git
+cd technical_test
+```
+
+### Build the application
+
+```bash
+./gradlew clean build
+```
+
+### Run the application
+
+```bash
+./gradlew bootRun
+```
+
+The application will start at:
+
+```
+http://localhost:8080
+```
+
+---
+
+## 7. Test the Application
+You will find the collection of requests in the following directory.
+```
+/collection/Technical-Test.postman_collection.json
+```
+### Note
+Remember to keep the web application open to make requests.
+
+
+
+## 7. Additional Notes
+
+- Reactive programming using Spring WebFlux.
+- Non-blocking operations and database access with R2DBC.
