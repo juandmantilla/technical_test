@@ -22,3 +22,12 @@ management:
         enabled: true
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
+
+adapters:
+  r2dbc:
+    host: "${HOST}"
+    port: "${PORT}"
+    database: "${DATABASE}"
+    schema: "${SCHEMA}"
+    username: "${USERNAME}"
+    password: "${PASSWORD}"

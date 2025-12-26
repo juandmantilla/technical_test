@@ -1,16 +1,14 @@
 package co.com.bancolombia.api;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
-import static org.springframework.web.reactive.function.server.RouterFunctions.route;
-
 @Configuration
-@RequireArgsConstructor
+@RequiredArgsConstructor
 public class RouterRest {
 
     private final Handler handler;
@@ -18,7 +16,12 @@ public class RouterRest {
     @Bean
     public RouterFunction<ServerResponse> routerFunction() {
         return RouterFunctions.route()
-                .POST("/api/franchise", handler::addNewFranchise);
-                .POST("/api/franchise", handler::addBranchToFranchise);
+                .POST("/api/franchise", handler::addNewFranchise)
+                .POST("/api/branch", handler::addBranchToFranchise)
+                .POST("/api/product", handler::addNewProductToBranch)
+                .DELETE("/api/product/{id}", handler::deleteProductInBranch)
+                .PUT("/api/product", handler::changeProductStock)
+                .GET("/api/product/{franchiseId}", handler::getStockProductByBranch)
+                .build();
     }
 }
