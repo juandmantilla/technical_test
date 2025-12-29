@@ -11,16 +11,10 @@
 			"name": "Add Franchise",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "id",
-						"value": "1",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Rustic Wood Franchise\",\r\n    \"description\": \"Franchise about Rustic Wood Company\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Juan Franchise 2\",\r\n    \"description\": \"Pollo frito 2\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -45,13 +39,7 @@
 			"name": "Add Branch to Franchise",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "id",
-						"value": "1",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"name\": \"Rustic Wood Franchise By French\",\r\n    \"franchiseId\": 4,\r\n    \"address\" : \"45 Street Avenue 17 Santa Rosita\",\r\n    \"phone\": \"+57 300 111 1111\"\r\n}",
@@ -79,16 +67,10 @@
 			"name": "Add Product to Branch",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "id",
-						"value": "1",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Extra Cheese Nachos\",\r\n    \"branchId\": 1,\r\n    \"price\" : 23.99,\r\n    \"stock\": 30\r\n}",
+					"raw": "{\r\n    \"name\": \"Crachos with Cheesse\",\r\n    \"branchId\": 1,\r\n    \"price\" : 23.99,\r\n    \"stock\": 30\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -113,13 +95,7 @@
 			"name": "Delete Product to Branch",
 			"request": {
 				"method": "DELETE",
-				"header": [
-					{
-						"key": "id",
-						"value": "1",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -130,7 +106,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/product/",
+					"raw": "localhost:8080/api/product/19",
 					"host": [
 						"localhost"
 					],
@@ -138,7 +114,7 @@
 					"path": [
 						"api",
 						"product",
-						""
+						"19"
 					]
 				}
 			},
@@ -148,13 +124,7 @@
 			"name": "Change Stock",
 			"request": {
 				"method": "PUT",
-				"header": [
-					{
-						"key": "id",
-						"value": "1",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"id\": 2,\r\n    \"stock\": 0\r\n}",
@@ -185,13 +155,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "id",
-						"value": "1",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"id\": 2,\r\n    \"stock\": 0\r\n}",
