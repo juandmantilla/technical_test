@@ -51,6 +51,9 @@ class BranchRepositoryAdapterTest {
         when(objectMapper.map(branchEntity, Branch.class))
                 .thenReturn(branch);
 
+        when(branchRepository.findByName(anyString()))
+                .thenReturn(Mono.empty());
+
         when(branchRepository.save(branchEntity))
                 .thenReturn(Mono.just(branchEntity));
 

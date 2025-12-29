@@ -12,6 +12,7 @@ import org.reactivecommons.utils.ObjectMapper;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -52,8 +53,9 @@ class FranchiseRepositoryAdapterTest {
         when(objectMapper.map(franchiseEntity, Franchise.class))
                 .thenReturn(franchise);
 
-        when(franchiseRepository.save(franchiseEntity))
-                .thenReturn(Mono.just(franchiseEntity));
+        when(franchiseRepository.findByName(anyString())).thenReturn(Mono.empty());
+
+        when(franchiseRepository.save(franchiseEntity)).thenReturn(Mono.just(franchiseEntity));
 
         StepVerifier.create(adapter.addNewFranchise(franchise))
                 .expectNext(franchise)

@@ -51,6 +51,7 @@ class ProductRepositoryAdapterTest {
 
         when(objectMapper.map(product, ProductEntity.class)).thenReturn(entity);
         when(objectMapper.map(entity, Product.class)).thenReturn(product);
+        when(productRepository.findByName(anyString())).thenReturn(Mono.empty());
         when(productRepository.save(entity)).thenReturn(Mono.just(entity));
 
         StepVerifier.create(adapter.addNewProductToBranch(product))
@@ -63,13 +64,16 @@ class ProductRepositoryAdapterTest {
 
         Product product = Product.builder()
                 .id(1L)
+                .name("name")
                 .build();
 
         ProductEntity entity = ProductEntity.builder()
                 .id(1L)
+                .name("name")
                 .build();
 
         when(objectMapper.map(product, ProductEntity.class)).thenReturn(entity);
+        when(productRepository.findByName(anyString())).thenReturn(Mono.empty());
         when(productRepository.save(entity))
                 .thenReturn(Mono.error(new RuntimeException("error")));
 
@@ -103,11 +107,13 @@ class ProductRepositoryAdapterTest {
 
         Product found = Product.builder()
                 .id(1L)
+                .name("name")
                 .stock(10)
                 .build();
 
         Product updated = found.toBuilder()
                 .stock(20)
+                .name("name")
                 .build();
 
         ProductEntity foundEntity = ProductEntity.builder().id(1L).stock(10).build();
@@ -133,9 +139,6 @@ class ProductRepositoryAdapterTest {
                 .expectError(TechnicalException.class)
                 .verify();
     }
-
-
-
 
 
 }
