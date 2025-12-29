@@ -71,6 +71,7 @@ public class EntityDtoMapper {
                 .name(entity.getName())
                 .price(entity.getPrice())
                 .stock(entity.getStock())
+                .createdDate(entity.getCreatedDate())
                 .build();
     }
 
