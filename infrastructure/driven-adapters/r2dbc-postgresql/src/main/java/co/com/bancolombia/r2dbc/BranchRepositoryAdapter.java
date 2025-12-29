@@ -22,8 +22,9 @@ public class BranchRepositoryAdapter extends ReactiveAdapterOperations<Branch, B
 
     @Override
     public Mono<Branch> addBranchToFranchise(Branch branch) {
-        return save(branch)
+        return repository.findByName(branch.getName())
                 .doFirst(() -> log.info("Start to save Branch to Franchise"))
+                .switchIfEmpty(save(branch))
                 .onErrorMap(error -> {
                     log.error("Error to Add Branch to Franchise", error);
                     return new TechnicalException(

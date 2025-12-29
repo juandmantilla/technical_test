@@ -23,8 +23,9 @@ public class FranchiseRepositoryAdapter extends ReactiveAdapterOperations<Franch
     @Override
     public Mono<Franchise> addNewFranchise(Franchise franchise) {
 
-        return save(franchise)
-                .doFirst(() -> log.info("Start add New Franchise"))
+        return repository.findByName(franchise.getName())
+                .doFirst(() -> log.info("Start searching franchise by Name"))
+                .switchIfEmpty(save(franchise))
                 .onErrorMap(error -> {
                     log.error("Error while trying to Add New Franchise", error);
                     return new TechnicalException(

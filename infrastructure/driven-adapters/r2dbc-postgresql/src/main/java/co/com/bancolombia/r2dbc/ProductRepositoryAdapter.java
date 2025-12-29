@@ -23,8 +23,9 @@ public class ProductRepositoryAdapter extends ReactiveAdapterOperations<Product,
 
     @Override
     public Mono<Product> addNewProductToBranch(Product product) {
-        return save(product)
+        return repository.findByName(product.getName())
                 .doOnSubscribe(sub -> log.info("Start to add new product to Branch:  {}", product))
+                .switchIfEmpty(save(product))
                 .onErrorMap(error -> {
                     log.error("Error while trying to save the product", error);
                     return new TechnicalException(
