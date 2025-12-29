@@ -3,12 +3,15 @@ package co.com.bancolombia.api.mappers;
 import co.com.bancolombia.api.dtos.in.BranchRequestDTO;
 import co.com.bancolombia.api.dtos.in.FranchiseRequestDTO;
 import co.com.bancolombia.api.dtos.in.ProductRequestDTO;
-import co.com.bancolombia.api.dtos.out.BranchResponseDTO;
-import co.com.bancolombia.api.dtos.out.FranchiseResponseDTO;
-import co.com.bancolombia.api.dtos.out.ProductResponseDTO;
+import co.com.bancolombia.api.dtos.outs.BranchResponseDTO;
+import co.com.bancolombia.api.dtos.outs.FranchiseResponseDTO;
+import co.com.bancolombia.api.dtos.outs.ProductResponseDTO;
 import co.com.bancolombia.model.branch.Branch;
 import co.com.bancolombia.model.franchise.Franchise;
 import co.com.bancolombia.model.product.Product;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntityDtoMapper {
 
@@ -61,14 +64,20 @@ public class EntityDtoMapper {
                 .build();
     }
 
-    public static ProductResponseDTO branchEntityToDto(Product entity) {
+    public static ProductResponseDTO productEntityToDto(Product entity) {
         return ProductResponseDTO.builder()
                 .id(entity.getId())
                 .branchId(entity.getBranchId())
                 .name(entity.getName())
                 .price(entity.getPrice())
                 .stock(entity.getStock())
-                .createdDate(entity.getCreatedDate())
                 .build();
     }
+
+    public static List<ProductResponseDTO> productsEntitiesToDto(List<Product> products) {
+        return products.stream()
+                .map(EntityDtoMapper::productEntityToDto)
+                .collect(Collectors.toList());
+    }
+
 }

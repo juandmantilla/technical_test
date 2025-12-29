@@ -1,7 +1,7 @@
 package co.com.bancolombia.api.helpers;
 
 
-import co.com.bancolombia.api.dtos.out.ResponseDTO;
+import co.com.bancolombia.api.dtos.outs.ResponseDTO;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 

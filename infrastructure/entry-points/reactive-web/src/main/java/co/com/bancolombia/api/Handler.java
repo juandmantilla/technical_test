@@ -34,6 +34,7 @@ public class Handler extends ApplicationExceptionHandler {
                 .doFirst(() -> log.info("Start process to add new franchise"))
                 .map(EntityDtoMapper::franchiseDtoToEntity)
                 .flatMap(franchiseUseCase::addNewFranchise)
+                .map(EntityDtoMapper::franchiseEntityToDto)
                 .flatMap(response -> ResponseBuilder.buildSuccessResponse(
                         ResponseMessages.FRANCHISE_SAVED.getStatusCode(),
                         ResponseMessages.FRANCHISE_SAVED.getDescription(),
@@ -48,6 +49,7 @@ public class Handler extends ApplicationExceptionHandler {
                 .doFirst(() -> log.info("Start to add Branch to Franchise"))
                 .map(EntityDtoMapper::branchDtoToEntity)
                 .flatMap(branchUseCase::addBranchToFranchise)
+                .map(EntityDtoMapper::branchEntityToDto)
                 .flatMap(response -> ResponseBuilder.buildSuccessResponse(
                         ResponseMessages.BRANCH_SAVED.getStatusCode(),
                         ResponseMessages.BRANCH_SAVED.getDescription(),
@@ -61,6 +63,7 @@ public class Handler extends ApplicationExceptionHandler {
                 .doFirst(() -> log.info("Start to add new Product to Branch"))
                 .map(EntityDtoMapper::productDtoToEntity)
                 .flatMap(productUseCase::addNewProductToBranch)
+                .map(EntityDtoMapper::productEntityToDto)
                 .flatMap(response -> ResponseBuilder.buildSuccessResponse(
                         ResponseMessages.PRODUCT_SAVED.getStatusCode(),
                         ResponseMessages.PRODUCT_SAVED.getDescription(),
@@ -87,6 +90,7 @@ public class Handler extends ApplicationExceptionHandler {
                 .doFirst(() -> log.info("Start to change Product Stock"))
                 .map(EntityDtoMapper::productDtoToEntity)
                 .flatMap(productUseCase::changeProductStock)
+                .map(EntityDtoMapper::productEntityToDto)
                 .flatMap(response -> ResponseBuilder.buildSuccessResponse(
                         ResponseMessages.STOCK_CHANGED.getStatusCode(),
                         ResponseMessages.STOCK_CHANGED.getDescription(),
@@ -101,6 +105,7 @@ public class Handler extends ApplicationExceptionHandler {
         return productUseCase.getStockProductByBranch(franchiseId)
                 .doFirst(() -> log.info("Searching for products with the highest stock levels by Franchise Id, : {}", franchiseId))
                 .collectList()
+                .map(EntityDtoMapper::productsEntitiesToDto)
                 .flatMap(response -> ResponseBuilder.buildSuccessResponse(
                         ResponseMessages.GET_STOCK.getStatusCode(),
                         ResponseMessages.GET_STOCK.getDescription(),

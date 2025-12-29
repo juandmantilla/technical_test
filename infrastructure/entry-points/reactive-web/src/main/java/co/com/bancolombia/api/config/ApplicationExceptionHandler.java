@@ -1,7 +1,7 @@
 package co.com.bancolombia.api.config;
 
 
-import co.com.bancolombia.api.dtos.out.ErrorDTO;
+import co.com.bancolombia.api.dtos.outs.ErrorDTO;
 import co.com.bancolombia.model.exceptions.BusinessException;
 import co.com.bancolombia.model.exceptions.TechnicalException;
 import co.com.bancolombia.model.messages.ResponseMessages;
@@ -12,8 +12,6 @@ import reactor.core.publisher.Mono;
 
 
 public abstract class ApplicationExceptionHandler {
-
-    private static final String ERROR = "Error";
 
     protected abstract Logger getLogger();
 
