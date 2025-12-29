@@ -21,12 +21,6 @@ The application is built using **Spring Boot WebFlux** and follows a **Scaffold 
 ## 2. Architecture
 
 - **Scaffold Clean Architecture**
-- Reactive and non-blocking design
-- Clear separation of concerns:
-    - Domain
-    - Use Cases
-    - Infrastructure
-    - Entry Points
 
 ---
 
@@ -158,12 +152,3 @@ You will find the collection of requests in the following directory.
 ```
 ### Note
 Remember to keep the web application open to make requests.
-
-
-
-## 7. Additional Notes
-
-- Reactive programming using Spring WebFlux.
-- Non-blocking operations and database access with R2DBC.
-
-
