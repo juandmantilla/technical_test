@@ -5,15 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductRequestDTO {
-    private Long id;
-    private String name;
-    private Double price;
-    private LocalDateTime createdDate;
+public class BranchProductRequestDTO {
+    private Long branchId;
+    private Long productId;
+    private Integer stock;
 }

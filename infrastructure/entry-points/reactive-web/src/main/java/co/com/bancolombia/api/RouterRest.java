@@ -18,10 +18,10 @@ public class RouterRest {
         return RouterFunctions.route()
                 .POST("/api/franchise", handler::addNewFranchise)
                 .POST("/api/branch", handler::addBranchToFranchise)
-                .POST("/api/product", handler::addNewProductToBranch)
-                .DELETE("/api/product/{id}", handler::deleteProductInBranch)
-                .PUT("/api/product", handler::changeProductStock)
-                .GET("/api/product/{franchiseId}", handler::getStockProductByBranch)
+                .POST("/api/branch/{branchId}/stock/{stock}", handler::addNewProductToBranch)
+                .DELETE("/api/product/{productId}/branch/{branchId}", handler::deleteProductInBranch)
+                .PUT("/api/product/stock", handler::changeProductStock)
+                .GET("/api/franchise/{franchiseId}/top-stock", handler::getTopStockProductsByFranchise)
                 .build();
     }
 }

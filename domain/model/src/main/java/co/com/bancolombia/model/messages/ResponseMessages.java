@@ -15,6 +15,12 @@ public enum ResponseMessages {
     STOCK_CHANGED("200", "Product stock successfully updated."),
     GET_STOCK("200", "The products have been successfully listed."),
 
+    SAVE_BRANCH_PRODUCT("200", "Branch Product successfully saved"),
+    ERROR_SAVE_BRANCH_PRODUCT("500", "An error ocurred while adding the Branch Product entity"),
+    ERROR_DELETE_BRANCH_PRODUCT("500", "An error ocurred while delete the Branch Product entity"),
+    DELETE_BRANCH_PRODUCT("200", "Branch - Product successfully saved"),
+
+
     PRODUCT_SAVED("200", "Product successfully saved."),
     PRODUCT_DELETED("200", "Product successfully deleted."),
     ERROR_SAVE_PRODUCT("500", "An error occurred while saving the product."),

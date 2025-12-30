@@ -1,14 +1,15 @@
 package co.com.bancolombia.api.mappers;
 
+import co.com.bancolombia.api.dtos.in.BranchProductRequestDTO;
 import co.com.bancolombia.api.dtos.in.BranchRequestDTO;
 import co.com.bancolombia.api.dtos.in.FranchiseRequestDTO;
 import co.com.bancolombia.api.dtos.in.ProductRequestDTO;
-import co.com.bancolombia.api.dtos.outs.BranchResponseDTO;
-import co.com.bancolombia.api.dtos.outs.FranchiseResponseDTO;
-import co.com.bancolombia.api.dtos.outs.ProductResponseDTO;
+import co.com.bancolombia.api.dtos.outs.*;
 import co.com.bancolombia.model.branch.Branch;
+import co.com.bancolombia.model.branchproduct.BranchProduct;
 import co.com.bancolombia.model.franchise.Franchise;
 import co.com.bancolombia.model.product.Product;
+import co.com.bancolombia.model.productstockbybranch.ProductStockByBranch;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,28 +58,58 @@ public class EntityDtoMapper {
     public static Product productDtoToEntity(ProductRequestDTO dto) {
         return Product.builder()
                 .id(dto.getId())
-                .branchId(dto.getBranchId())
                 .name(dto.getName())
                 .price(dto.getPrice())
-                .stock(dto.getStock())
                 .build();
     }
 
     public static ProductResponseDTO productEntityToDto(Product entity) {
         return ProductResponseDTO.builder()
                 .id(entity.getId())
-                .branchId(entity.getBranchId())
                 .name(entity.getName())
                 .price(entity.getPrice())
-                .stock(entity.getStock())
                 .createdDate(entity.getCreatedDate())
                 .build();
     }
 
-    public static List<ProductResponseDTO> productsEntitiesToDto(List<Product> products) {
-        return products.stream()
-                .map(EntityDtoMapper::productEntityToDto)
+    public static ProductResponseDTO productBranchEntityToDto(Product entity, Long branchId, Integer stock) {
+        var productBranch = productEntityToDto(entity);
+        productBranch.setBranchId(branchId);
+        productBranch.setStock(stock);
+        return productBranch;
+    }
+
+    public static List<ProductStockByBranchResponseDTO> productsEntitiesToDto(List<ProductStockByBranch> entities) {
+        return entities.stream()
+                .map(EntityDtoMapper::productStockBranchEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+    public static ProductStockByBranchResponseDTO productStockBranchEntityToDto(ProductStockByBranch entity) {
+
+        return ProductStockByBranchResponseDTO.builder()
+                .branchId(entity.getBranchId())
+                .branchName(entity.getBranchName())
+                .productId(entity.getProductId())
+                .productName(entity.getProductName())
+                .stock(entity.getStock())
+                .build();
+    }
+
+    public static BranchProduct branchProductDtoToEntity(BranchProductRequestDTO dto) {
+        return BranchProduct.builder()
+                .branchId(dto.getBranchId())
+                .productId(dto.getProductId())
+                .stock(dto.getStock())
+                .build();
+    }
+
+    public static BranchProductResponseDTO branchProductEntityToDto(BranchProduct entity) {
+        return BranchProductResponseDTO.builder()
+                .branchId(entity.getBranchId())
+                .productId(entity.getProductId())
+                .stock(entity.getStock())
+                .build();
     }
 
 }

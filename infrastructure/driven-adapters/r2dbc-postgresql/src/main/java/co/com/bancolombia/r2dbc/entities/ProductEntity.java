@@ -17,14 +17,9 @@ public class ProductEntity {
     @Id
     private Long id;
 
-    @Column("branch_id")
-    private Long branchId;
-
     private String name;
 
     private Double price;
-
-    private Integer stock;
 
     @Column("created_date")
     private LocalDateTime createdDate;

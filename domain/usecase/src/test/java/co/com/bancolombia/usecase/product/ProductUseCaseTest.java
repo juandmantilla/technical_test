@@ -1,7 +1,11 @@
 package co.com.bancolombia.usecase.product;
 
+import co.com.bancolombia.model.branchproduct.BranchProduct;
+import co.com.bancolombia.model.branchproduct.gateways.BranchProductGateway;
 import co.com.bancolombia.model.product.Product;
 import co.com.bancolombia.model.product.gateways.ProductGateway;
+import co.com.bancolombia.model.productstockbybranch.ProductStockByBranch;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,105 +15,86 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.time.LocalDateTime;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 class ProductUseCaseTest {
 
     @Mock
-    ProductGateway productGateway;
+    private ProductGateway productGateway;
+
+    @Mock
+    private BranchProductGateway branchProductGateway;
 
     @InjectMocks
-    ProductUseCase productUseCase;
+    private ProductUseCase productUseCase;
 
-    @Test
-    void addNewProductToBranchTest() {
+    private Product product;
+    private Product savedProduct;
 
-        Product product = Product.builder()
-                .id(1L)
-                .name("Burger")
-                .stock(10)
+    @BeforeEach
+    void setUp() {
+        product = Product.builder()
+                .name("Laptop")
+                .createdDate(LocalDateTime.now())
                 .build();
 
-        Product productWithDate = product.createdDate();
-
-        when(productGateway.addNewProductToBranch(any(Product.class)))
-                .thenReturn(Mono.just(productWithDate));
-
-        StepVerifier.create(productUseCase.addNewProductToBranch(product))
-                .assertNext(savedProduct -> {
-                    assertNotNull(savedProduct.getCreatedDate());
-                    assertEquals("Burger", savedProduct.getName());
-                    assertEquals(10, savedProduct.getStock());
-                })
-                .verifyComplete();
-
-        verify(productGateway).addNewProductToBranch(any(Product.class));
+        savedProduct = Product.builder()
+                .id(1L)
+                .name("Laptop")
+                .createdDate(product.getCreatedDate())
+                .build();
     }
 
     @Test
-    void deleteProductInBranchTest() {
+    void shouldAddNewProductToBranchSuccessfully() {
+        Long branchId = 10L;
+        Integer stock = 50;
 
-        Product product = Product.builder()
-                .id(1L)
+        when(productGateway.addNewProductToBranch(any()))
+                .thenReturn(Mono.just(savedProduct));
+
+        when(branchProductGateway.saveBranchProduct(any(BranchProduct.class)))
+                .thenReturn(Mono.just(BranchProduct.builder().build()));
+
+        StepVerifier.create(
+                        productUseCase.addNewProductToBranch(product, branchId, stock)
+                )
+                .expectNext(savedProduct)
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnTopStockProductsByFranchise() {
+        Long franchiseId = 5L;
+
+        var ps1 = ProductStockByBranch.builder()
+                .productId(1L)
+                .branchId(10L)
+                .stock(100)
                 .build();
 
-        when(productGateway.deleteProductInBranch(1L))
-                .thenReturn(Mono.empty());
-
-
-        Mono<Void> result = productUseCase.deleteProductInBranch(product);
-
-        StepVerifier.create(result)
-                .verifyComplete();
-
-        verify(productGateway).deleteProductInBranch(1L);
-    }
-
-    @Test
-    void changeProductStockTest() {
-
-        Product product = Product.builder()
-                .id(1L)
-                .stock(20)
+        var ps2 = ProductStockByBranch.builder()
+                .productId(2L)
+                .branchId(11L)
+                .stock(80)
                 .build();
 
-        Product productWithNewStock = product.validateNewStock(20);
+        when(productGateway.getTopStockProductsByFranchise(franchiseId))
+                .thenReturn(Flux.just(ps1, ps2));
 
-        when(productGateway.changeProductStock(any(Product.class)))
-                .thenReturn(Mono.just(productWithNewStock));
-
-        StepVerifier.create(productUseCase.changeProductStock(product))
-                .assertNext(updatedProduct -> {
-                    assertEquals(20, updatedProduct.getStock());
-                })
+        StepVerifier.create(
+                        productUseCase.getTopStockProductsByFranchise(franchiseId)
+                )
+                .expectNext(ps1)
+                .expectNext(ps2)
                 .verifyComplete();
 
-        verify(productGateway).changeProductStock(any(Product.class));
     }
-
-    @Test
-    void getStockProductByBranchTest() {
-       Long franchiseId = 1L;
-
-        Product product1 = Product.builder().id(1L).name("Burger").stock(10).build();
-        Product product2 = Product.builder().id(2L).name("Pizza").stock(5).build();
-
-        when(productGateway.getStockProductByBranch(franchiseId))
-                .thenReturn(Flux.just(product1, product2));
-
-        Flux<Product> result = productUseCase.getStockProductByBranch(franchiseId);
-
-        StepVerifier.create(result)
-                .expectNext(product1)
-                .expectNext(product2)
-                .verifyComplete();
-
-        verify(productGateway).getStockProductByBranch(franchiseId);
-    }
-
 }
+
+
