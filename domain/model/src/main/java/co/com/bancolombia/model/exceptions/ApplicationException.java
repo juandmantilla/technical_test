@@ -10,7 +10,7 @@ public abstract class ApplicationException extends RuntimeException {
     private final String description;
     private final ErrorType errorType;
 
-    public ApplicationException(String errorCode, String description, ErrorType errorType) {
+    protected ApplicationException(String errorCode, String description, ErrorType errorType) {
         super(description);
         this.errorCode = errorCode;
         this.description = description;
