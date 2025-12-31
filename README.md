@@ -1,6 +1,7 @@
 # Technical Test – Scaffold Clean Architecture
 
-Backend application developed as a technical test to manage **franchises, branches, and products**, including **stock management** and **queries to retrieve the product with the highest stock per branch**.
+Backend application developed as a technical test to manage **franchises, branches, and products**, including **stock
+management** and **queries to retrieve the product with the highest stock per branch**.
 
 The application is built using **Spring Boot WebFlux** and follows a **Scaffold Clean Architecture** approach.
 
@@ -76,15 +77,27 @@ CREATE TABLE branch (
 
 CREATE TABLE product (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    branch_id BIGINT NOT NULL,
     name VARCHAR(100) NOT NULL,
     price NUMERIC(10,2) NOT NULL,
-    stock INT NOT NULL,
-    created_date TIMESTAMP,
+    created_date TIMESTAMP
+);
 
-    CONSTRAINT fk_product_branch
+
+CREATE TABLE branch_product (
+    branch_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    stock INT NOT NULL,
+
+    PRIMARY KEY (branch_id, product_id),
+
+    CONSTRAINT fk_bp_branch
         FOREIGN KEY (branch_id)
         REFERENCES branch(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_bp_product
+        FOREIGN KEY (product_id)
+        REFERENCES product(id)
         ON DELETE CASCADE
 );
 ```
@@ -114,6 +127,7 @@ $env:DB_SCHEMA="public"
 $env:DB_PASSWORD="<your_password>"
 $env:DB_USERNAME="postgres"
 ```
+
 ---
 
 ## 6. How to Run the Application
@@ -146,9 +160,9 @@ http://localhost:8080
 ---
 
 ## 7. Test the Application
+
 You will find the collection of requests in the following directory.
+
 ```
 /collection/Technical-Test.postman_collection.json
 ```
-### Note
-Remember to keep the web application open to make requests.
