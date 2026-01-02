@@ -14,9 +14,9 @@ import reactor.core.publisher.Mono;
 
 @Repository
 @Slf4j
-public class BranchProductAdapter extends ReactiveAdapterOperations<BranchProduct, BranchProductEntity, Void, BranchProductRepository> implements BranchProductGateway {
+public class BranchProductRepositoryAdapter extends ReactiveAdapterOperations<BranchProduct, BranchProductEntity, Void, BranchProductRepository> implements BranchProductGateway {
 
-    public BranchProductAdapter(BranchProductRepository repository, ObjectMapper mapper) {
+    public BranchProductRepositoryAdapter(BranchProductRepository repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.map(d, BranchProduct.class));
     }
 
