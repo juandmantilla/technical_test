@@ -110,7 +110,7 @@ CREATE TABLE branch_product (
 
 ```bash
 export DB_DATABASE=postgres
-export DB_HOST=docker ip database
+export DB_HOST=<your_docker_ip_database>
 export DB_PORT=5432
 export DB_SCHEMA=public
 export DB_PASSWORD=<your_password>
@@ -121,7 +121,7 @@ export DB_USERNAME=postgres
 
 ```powershell
 $env:DB_DATABASE="postgres"
-$env:DB_HOST="<docker ip database>"
+$env:DB_HOST="<your_docker_ip_database>"
 $env:DB_PORT="5432"
 $env:DB_SCHEMA="public"
 $env:DB_PASSWORD="<your_password>"
