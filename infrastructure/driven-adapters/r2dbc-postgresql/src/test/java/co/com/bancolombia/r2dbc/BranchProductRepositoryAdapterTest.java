@@ -67,7 +67,7 @@ class BranchProductRepositoryAdapterTest {
                 .thenReturn(Mono.error(new RuntimeException("DB error")));
 
         StepVerifier.create(adapter.saveBranchProduct(branchProduct))
-                .expectErrorMatches(error -> error instanceof TechnicalException)
+                .expectErrorMatches(TechnicalException.class::isInstance)
                 .verify();
     }
 
@@ -86,7 +86,7 @@ class BranchProductRepositoryAdapterTest {
                 .thenReturn(Mono.error(new RuntimeException("DB error")));
 
         StepVerifier.create(adapter.deleteBranchProduct(branchProduct))
-                .expectErrorMatches(error -> error instanceof TechnicalException)
+                .expectErrorMatches(TechnicalException.class::isInstance)
                 .verify();
     }
 
@@ -106,7 +106,7 @@ class BranchProductRepositoryAdapterTest {
                 .thenReturn(Mono.error(new RuntimeException("DB error")));
 
         StepVerifier.create(adapter.changeStock(branchProduct))
-                .expectErrorMatches(error -> error instanceof TechnicalException)
+                .expectErrorMatches(TechnicalException.class::isInstance)
                 .verify();
     }
 }

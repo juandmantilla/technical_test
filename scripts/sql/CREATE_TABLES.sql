@@ -45,19 +45,3 @@ CREATE TABLE branch_product (
         ON DELETE CASCADE
 );
 
-INSERT INTO franchise (name, description, created_date) VALUES
-('Franquicia Norte', 'Franquicia zona norte', NOW());
-
-
-INSERT INTO branch (franchise_id, name, address, phone, created_date) VALUES
-(1, 'Sucursal Medellín', 'Calle 10 #20-30', '3001112233', NOW()),
-(1, 'Sucursal Bogotá',  'Carrera 7 #45-60', '3002223344', NOW()),
-(1, 'Sucursal Cali',    'Avenida 5 #12-90', '3003334455', NOW());
-
-
-INSERT INTO product (name, price, created_date) VALUES
-('Laptop',      3500.00, NOW()),
-('Mouse',        80.00, NOW()),
-('Teclado',     150.00, NOW()),
-('Monitor',    1200.00, NOW()),
-('Impresora',   900.00, NOW());

@@ -97,9 +97,7 @@ class ProductRepositoryAdapterTest {
         when(productRepository.save(productEntity)).thenReturn(Mono.just(productEntity));
 
         StepVerifier.create(adapter.addNewProductToBranch(product))
-                .expectErrorMatches(error ->
-                        error instanceof TechnicalException
-                )
+                .expectErrorMatches(TechnicalException.class::isInstance)
                 .verify();
     }
 
@@ -111,9 +109,7 @@ class ProductRepositoryAdapterTest {
                 .thenReturn(Flux.error(new RuntimeException("ERROR DB")));
 
         StepVerifier.create(adapter.getTopStockProductsByFranchise(1L))
-                .expectErrorMatches(error ->
-                        error instanceof TechnicalException
-                )
+                .expectErrorMatches(TechnicalException.class::isInstance)
                 .verify();
     }
 
