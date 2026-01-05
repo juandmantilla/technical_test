@@ -1,12 +1,10 @@
 package co.com.bancolombia.model.exceptions;
 
 
-import co.com.bancolombia.model.exceptions.error.types.ErrorType;
-
 public class TechnicalException extends ApplicationException {
 
     public TechnicalException(String errorCode, String description) {
-        super(errorCode, formatDescription(description), ErrorType.TECHNICAL);
+        super(errorCode, formatDescription(description));
     }
 
     private static String formatDescription(String description) {

@@ -12,7 +12,6 @@ import co.com.bancolombia.model.product.Product;
 import co.com.bancolombia.model.productstockbybranch.ProductStockByBranch;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EntityDtoMapper {
 
@@ -82,7 +81,7 @@ public class EntityDtoMapper {
     public static List<ProductStockByBranchResponseDTO> productsEntitiesToDto(List<ProductStockByBranch> entities) {
         return entities.stream()
                 .map(EntityDtoMapper::productStockBranchEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static ProductStockByBranchResponseDTO productStockBranchEntityToDto(ProductStockByBranch entity) {
